@@ -1,0 +1,132 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-4 generator">
+      <form [formGroup]="addNewForm">
+        <div class="col-12 form-group mb-3">
+          <label for="inputType">Select Input Type</label>
+          <select formControlName="type" class="form-select" (change)="changeType($event)">
+            <option value="" disabled selected hidden>Choose an option</option>
+            <option *ngFor="let opt of inputTypes" [value]="opt.name">{{opt.label}}</option>
+          </select>
+          <div class="text-danger" *ngIf="type.touched && type.invalid">
+            <strong class="text-capitalize">Select input type</strong>
+          </div>
+        </div>
+        <div class="col-12 form-group mb-3">
+          <label for="name">Label</label>
+          <input type="text" class="form-control" formControlName="label" placeholder="Enter Label">
+          <div class="text-danger" *ngIf="label.touched && label.invalid">
+            <strong class="text-capitalize">Label is required</strong>
+          </div>
+        </div>
+        <div class="col-12 mb-3 form-check">
+          <input class="form-check-input" type="checkbox" formControlName="isRequired">
+          <label class="form-check-label" for="isRequired">
+            Is Required?
+          </label>
+        </div>
+        <div class="col-12 form-group mb-3">
+          <label for="name">Placeholder</label>
+          <input type="text" class="form-control" formControlName="placeholder" placeholder="Enter Placeholder">
+        </div>
+        <div *ngIf="this.type.value === 'select' || this.type.value === 'radio'" class="col-12 form-group mb-3">
+          <label for="name">Options</label>
+          <tag-input formControlName="options"></tag-input>
+        </div>
+        <div class="col-12 form-group mb-3">
+          <button class="btn btn-primary" [disabled]="addNewForm.invalid" (click)="addNew()">Add Input</button>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="listItems.length === 0" class="col-sm-12 col-md-8 center">
+      <div class="jumbotron">
+        <h1 class="display-6" style="color: #e75b1e;">Your input fields will be displayed here.</h1>
+        <p class="lead" style="color: #349cf7;">Please add at least one ore more input fields.</p>
+      </div>
+    </div>
+    <div *ngIf="listItems.length > 0" class="col-sm-12 col-md-8">
+      <form [formGroup]="formBasic">
+        <div class="row" *ngFor="let item of listItems; let i=index">
+          <div class="col-8 col-sm-10 col-md-10 col-lg-10" [ngSwitch]="item.type">
+            <div class="col-12 form-group mb-3" *ngSwitchCase="'text'">
+              <label for="{{item.label}}">{{item.label}}</label>
+              <input type="text" class="form-control" formControlName="{{item.label}}" placeholder="{{item.placeholder}}">
+            </div>
+            <div class="col-12 form-group mb-3" *ngSwitchCase="'textarea'">
+              <label for="{{item.label}}">{{item.label}}</label>
+              <textarea class="form-control" formControlName="{{item.label}}" placeholder="{{item.placeholder}}"></textarea>
+            </div>
+            <div class="col-12 form-group mb-3" *ngSwitchCase="'checkbox'">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="{{item.label}}">
+                <label class="form-check-label" for="{{item.label}}">
+                  {{item.label}}
+                </label>
+              </div>
+            </div>
+            <div class="col-12 form-group mb-3" *ngSwitchCase="'radio'">
+              <label for="{{item.label}}">{{item.label}}</label><br>
+              <div *ngFor="let opt of item.options" class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" formControlName="{{item.label}}" [value]="opt.value">
+                <label class="form-check-label" for="{{opt.value}}">{{opt.value}}</label>
+              </div>
+            </div>
+            <div class="col-12 form-group mb-3" *ngSwitchCase="'select'">
+              <label for="{{item.label}}">{{item.label}}</label>
+              <select class="form-select" formControlName="{{item.label}}">
+                <option value="" disabled selected hidden>{{item.placeholder}}</option>
+                <option *ngFor="let opt of item.options" [value]="opt.value">{{opt.value}}</option>
+              </select>
+            </div>
+            <div class="col-12 form-group mb-3" *ngSwitchCase="'toggle'">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" formControlName="{{item.label}}">
+                <label class="form-check-label" for="{{item.label}}">{{item.label}}</label>
+              </div>
+            </div>
+            <div class="col-12 form-group mb-3" *ngSwitchCase="'date'">
+              <label for="{{item.label}}">{{item.label}}</label>
+              <input type="date" class="form-control" formControlName="{{item.label}}">
+            </div>
+            <div class="col-12 form-group mb-3" *ngSwitchCase="'time'">
+              <label for="{{item.label}}">{{item.label}}</label>
+              <input type="time" class="form-control" formControlName="{{item.label}}">
+            </div>
+            <div class="col-12 form-group mb-3" *ngSwitchCase="'datetime'">
+              <label for="{{item.label}}">{{item.label}}</label>
+              <input type="datetime-local" class="form-control" formControlName="{{item.label}}">
+            </div>
+            <div class="text-danger mb-2"
+              *ngIf="this.formBasic.get(item.label).touched && this.formBasic.get(item.label).invalid">
+              <strong class="text-capitalize">This field is required</strong>
+            </div>
+          </div>
+          <div class="col-4 col-sm-2 col-md-2 col-lg-2 center">
+            <button type="button" class="btn btn-danger btn-sm" (click)="deleteField(item)">Delete</button>
+          </div>
+        </div>
+        <div class="col-12 form-group mb-3">
+          <button class="btn btn-primary" [disabled]="formBasic.invalid" (click)="submit()">Submit</button>
+          <button class="btn btn-danger" style="margin-left: 0.5em;" (click)="clearAll()">Clear All</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <hr>
+  <div class="row" *ngIf="outputArray.length > 0">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Input Field</th>
+          <th scope="col">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of outputArray">
+          <td>{{item.name}}</td>
+          <td>{{item.value}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+.generator {
+  border-right: 3pt solid #22dffd;
+}
+
+@media only screen and (max-width: 768px) {
+  .generator {
+    border: none
+  }
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
