@@ -37,6 +37,7 @@
           <button class="btn btn-primary" [disabled]="addNewForm.invalid" (click)="addNew()">Add Input</button>
         </div>
       </form>
+      <hr>
     </div>
     <div *ngIf="listItems.length === 0" class="col-sm-12 col-md-8 center">
       <div class="jumbotron">
@@ -50,11 +51,13 @@
           <div class="col-8 col-sm-10 col-md-10 col-lg-10" [ngSwitch]="item.type">
             <div class="col-12 form-group mb-3" *ngSwitchCase="'text'">
               <label for="{{item.label}}">{{item.label}}</label>
-              <input type="text" class="form-control" formControlName="{{item.label}}" placeholder="{{item.placeholder}}">
+              <input type="text" class="form-control" formControlName="{{item.label}}"
+                placeholder="{{item.placeholder}}">
             </div>
             <div class="col-12 form-group mb-3" *ngSwitchCase="'textarea'">
               <label for="{{item.label}}">{{item.label}}</label>
-              <textarea class="form-control" formControlName="{{item.label}}" placeholder="{{item.placeholder}}"></textarea>
+              <textarea class="form-control" formControlName="{{item.label}}"
+                placeholder="{{item.placeholder}}"></textarea>
             </div>
             <div class="col-12 form-group mb-3" *ngSwitchCase="'checkbox'">
               <div class="form-check">
@@ -114,10 +117,11 @@
   </div>
   <hr>
   <div class="row" *ngIf="outputArray.length > 0">
+    <p class="lead" style="color: #e75b1e;">List of Inputs: </p>
     <table class="table table-striped">
       <thead>
         <tr>
-          <th scope="col">Input Field</th>
+          <th scope="col">Label</th>
           <th scope="col">Value</th>
         </tr>
       </thead>

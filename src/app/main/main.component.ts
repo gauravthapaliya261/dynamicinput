@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -80,13 +80,13 @@ export class MainComponent implements OnInit {
     });
   }
 
-  get type() {
+  get type(): AbstractControl {
     return this.addNewForm.get('type');
   }
-  get label() {
+  get label(): AbstractControl {
     return this.addNewForm.get('label');
   }
-  get options() {
+  get options(): AbstractControl {
     return this.addNewForm.get('options');
   }
 
@@ -95,8 +95,13 @@ export class MainComponent implements OnInit {
       this.toastr.warning('Input field with label ' + this.addNewForm.value.label + ' already added.', 'Oops !', { timeOut: 3000 });
     } else {
       this.listItems.push(this.addNewForm.value);
-      this.formBasic.addControl(this.addNewForm.value.label,
-        this.fb.control('', this.addNewForm.value.isRequired ? Validators.required : null));
+      if (this.addNewForm.value.type === 'checkbox' || this.addNewForm.value.type === 'toggle') {
+        this.formBasic.addControl(this.addNewForm.value.label,
+          this.fb.control(false, this.addNewForm.value.isRequired ? Validators.required : null));
+      } else {
+        this.formBasic.addControl(this.addNewForm.value.label,
+          this.fb.control('', this.addNewForm.value.isRequired ? Validators.required : null));
+      }
     }
     this.addNewForm.reset();
     this.addNewForm.controls.isRequired.setValue(true);

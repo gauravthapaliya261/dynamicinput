@@ -1,10 +1,17 @@
 .generator {
-  border-right: 3pt solid #22dffd;
+  border-right: 2pt solid #22dffd;
+}
+
+.generator > hr {
+  display: none;
 }
 
 @media only screen and (max-width: 768px) {
   .generator {
-    border: none
+    border: none;
+  }
+  .generator > hr {
+    display: block;
   }
 }
 
@@ -13,4 +20,3 @@
   justify-content: center;
   align-items: center;
 }
-
