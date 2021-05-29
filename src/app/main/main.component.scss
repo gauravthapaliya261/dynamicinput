@@ -20,3 +20,32 @@
   justify-content: center;
   align-items: center;
 }
+
+.table-fixed thead {
+  width: 97%;
+}
+thead {
+  background-color: #145019 !important;
+}
+.table-fixed tbody {
+  height: 30vh;
+  overflow-y: auto;
+  width: 100%;
+}
+.table-fixed thead,
+.table-fixed tbody,
+.table-fixed tr,
+.table-fixed td,
+.table-fixed th {
+  display: block;
+}
+.table-fixed tbody td,
+.table-fixed thead > tr > th {
+  float: left;
+  border-bottom-width: 0;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.table-fixed tbody::-webkit-scrollbar {
+  display: none;
+}
